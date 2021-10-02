@@ -1,5 +1,6 @@
 #[cfg(test)]
 pub mod tests {
+    use std::assert_matches::assert_matches;
     use crate::wal_watcher::WalLoader;
 
     use crate::db_context::create_empty_context;

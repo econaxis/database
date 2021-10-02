@@ -145,14 +145,16 @@ mod tests {
         let map = json_to_map(v.clone());
 
         map.iter().for_each(|(path, _value)| {
-            let new = path.as_str().strip_prefix("/user").unwrap();
+            let new = path.as_str();
             let _a = read_json_request(new, &ctx);
             let stripped = match new.strip_suffix('/') {
                 Some(x) => x,
                 None => new,
             };
-            let _b = v.pointer(stripped).unwrap();
-            assert_eq!(*v.pointer(stripped).unwrap(), read_json_request(new, &ctx));
+            let b = v.pointer(stripped).unwrap();
+
+            let c = read_json_request(new, &ctx);
+            assert_eq!(*b, c);
         });
 
         assert_eq!(value, v);

@@ -48,11 +48,11 @@ impl Drop for DbContext {
     fn drop(&mut self) {
         // Checks if our database and the replicated database are the exact same by comparing debug strings.
         if let Some(repl) = &self.replicators {
-            if !check_func1(self, repl.deref(), Timestamp::now()).unwrap() {
+           /* if !check_func1(self, repl.deref(), Timestamp::now()).unwrap() {
                 panic!("error: nonmatching");
             } else {
                 println!("replication matches");
-            }
+            }*/
         }
     }
 }

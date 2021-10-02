@@ -2,6 +2,7 @@
 #![cfg(test)]
 
 use crate::rwtransaction_wrapper::ReplicatedTxn;
+use std::assert_matches::assert_matches;
 
 #[test]
 pub fn g1ctest() {

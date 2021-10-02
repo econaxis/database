@@ -3,6 +3,8 @@ use std::borrow::Borrow;
 use std::collections::Bound;
 use std::fmt::{Display, Formatter};
 use std::iter::FromIterator;
+use std::io::{BufRead, Split};
+
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Serialize, Deserialize)]
 pub struct ObjectPath(String);
 
@@ -19,7 +21,7 @@ impl From<&str> for ObjectPath {
 }
 
 impl<BS: Borrow<str>> FromIterator<BS> for ObjectPath {
-    fn from_iter<T: IntoIterator<Item = BS>>(iter: T) -> Self {
+    fn from_iter<T: IntoIterator<Item=BS>>(iter: T) -> Self {
         iter.into_iter().fold(
             ObjectPath::new(""),
             |one: ObjectPath, two: BS| -> ObjectPath { one.concat(two) },
@@ -58,15 +60,16 @@ impl ObjectPath {
         Self(newone)
     }
 
-    pub fn split_parts(&self) -> std::str::Split<'_, char> {
+    pub fn split_parts(&self) -> Vec<&str> {
         let len = self.0.len();
-        std::str::from_utf8(
-            // Starting with a slash, generates empty string in the beginning
-            // (undesireable)
-            self.0[1..len - 1].as_ref(),
-        )
-        .unwrap()
-        .split('/')
+
+
+        if len > 1 {
+            self.0[1..len - 1]
+            .split('/').collect()
+        } else {
+            Vec::new()
+        }
     }
 
     pub fn make_correct_suffix(&mut self) {

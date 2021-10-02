@@ -15,7 +15,7 @@ pub fn read_json_request_txn(uri: &str, ctx: &SelfContainedDb, txn: LockDataRef)
 
     let mut json = JSONValue::Null;
     for row in ret {
-        let path: Vec<&str> = row.0.split_parts().collect();
+        let path: Vec<&str> = row.0.split_parts();
         json_processing::create_materialized_path(&mut json, &path, row.1.into_inner().1);
     }
 
@@ -28,13 +28,32 @@ pub fn read_json_request_txn(uri: &str, ctx: &SelfContainedDb, txn: LockDataRef)
         None => JSONValue::Null,
     }
 }
+
 // todo: modify function to handle transactions
 pub fn read_json_request(uri: &str, ctx: &DbContext) -> JSONValue {
-    unimplemented!()
-    // let mut txn = ReplicatedTxn::new(&ctx);
-    //
-    // txn.commit();
-    // json
+    let objpath = prettify_json_path(uri);
+
+    let mut txn = ReplicatedTxn::new(&ctx);
+    let ret = txn.read_range_owned(&objpath).unwrap();
+
+    let mut json = JSONValue::Null;
+    for row in ret {
+        let path: Vec<&str> = row.0.split_parts();
+        json_processing::create_materialized_path(&mut json, &path, row.1.into_inner().1);
+    }
+
+    txn.commit();
+
+    let stripped = match objpath.as_str().strip_suffix('/') {
+        Some(x) => x,
+        None => objpath.as_str(),
+    };
+    let json = match json.pointer_mut(stripped) {
+        Some(a) => a.take(),
+        None => JSONValue::Null,
+    };
+
+    json
 }
 
 fn prettify_json_path(uri: &str) -> ObjectPath {

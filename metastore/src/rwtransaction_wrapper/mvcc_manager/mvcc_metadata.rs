@@ -299,6 +299,8 @@ mod tests {
 
     use super::*;
     use crate::db_context::create_replicated_context;
+    use std::assert_matches::assert_matches;
+
 
     #[test]
     fn check_read() {

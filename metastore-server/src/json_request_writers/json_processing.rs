@@ -96,7 +96,7 @@ pub fn map_to_json(map: &Vec<(ObjectPath, PrimitiveValue)>) -> Value {
     let mut start = Value::Null;
 
     map.iter().for_each(|(path, value)| {
-        let split: Vec<_> = path.split_parts().collect();
+        let split: Vec<_> = path.split_parts();
         create_materialized_path(&mut start, &split, value);
     });
 
@@ -146,7 +146,7 @@ pub fn create_materialized_path<RawValue: ToString>(
             }
             create_materialized_path(obj.get_mut(path[0]).unwrap(), &path[1..], final_value);
         }
-        0 => unreachable!(),
+        0 => *json = Value::String(final_value.to_string()),
         _ => panic!("Maximum JSON depth exceeded"),
     };
 }

@@ -121,6 +121,8 @@ impl BtreeIndexInternal {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::assert_matches::assert_matches;
+
 
     #[test]
     fn test_index() {

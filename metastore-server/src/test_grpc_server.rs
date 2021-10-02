@@ -53,7 +53,7 @@ fn main() {
 #[cfg(test)]
 #[test]
 fn test_grpc() {
-    let client = generate_threaded_follower("0.0.0.0:50051".parse().unwrap());
+    let client = generate_threaded_follower("0.0.0.0:50051");
     let mut rt = Runtime::new().unwrap();
 
     rt.block_on(async move {

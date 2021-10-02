@@ -158,6 +158,8 @@ pub fn read(
 mod tests {
     use crate::db;
     use crate::rwtransaction_wrapper::ReplicatedTxn;
+    use std::assert_matches::assert_matches;
+
 
     #[test]
     fn regression_wrong_error_emitted() {

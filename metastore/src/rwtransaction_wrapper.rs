@@ -173,7 +173,7 @@ impl<'a> ReplicatedTxn<'a> {
             .map_err(|a| format!("replicator error {}", a));
 
         if res.is_ok() != res1.is_ok() {
-            debug!(
+            log::info!(
                 "nonmatching write results: {:?} {:?} {}",
                 res,
                 res1,
@@ -245,6 +245,8 @@ impl Drop for ReplicatedTxn<'_> {
 
 #[cfg(test)]
 mod tests {
+    use std::assert_matches::assert_matches;
+
     use super::*;
     use crate::wal_watcher::WalLoader;
 
