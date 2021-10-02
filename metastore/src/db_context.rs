@@ -1,15 +1,15 @@
 use crate::replicated_slave::SelfContainedDb;
-use crate::wal_watcher::{ByteBufferWAL, WalLoader};
+use crate::wal_watcher::{ByteBufferWAL};
 
 use crate::history_storage::MutSlab;
 use crate::rwtransaction_wrapper::{IntentMap, MutBTreeMap};
 
-use crate::file_debugger::print_to_file;
+
 use crate::local_replication_handler::LocalReplicationHandler;
 use crate::rpc_handler::DatabaseInterface;
-use crate::timestamp::Timestamp;
-use crate::wal_watcher::wal_check_consistency::check_func1;
-use std::ops::Deref;
+
+
+
 
 pub mod self_contained_wrapper;
 
@@ -47,7 +47,7 @@ pub struct DbContext {
 impl Drop for DbContext {
     fn drop(&mut self) {
         // Checks if our database and the replicated database are the exact same by comparing debug strings.
-        if let Some(repl) = &self.replicators {
+        if let Some(_repl) = &self.replicators {
            /* if !check_func1(self, repl.deref(), Timestamp::now()).unwrap() {
                 panic!("error: nonmatching");
             } else {

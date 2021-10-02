@@ -65,7 +65,7 @@ impl MVCCMetadata {
         txnmap: &IntentMap,
         cur_txn: LockDataRef,
     ) -> Result<(), WriteIntentError> {
-        let curwriteintent = self.cur_write_intent.get().clone();
+        let curwriteintent = self.cur_write_intent.get();
         match curwriteintent {
             None => Ok(()),
             Some(wi) if wi.associated_transaction == cur_txn => Ok(()),
@@ -131,7 +131,7 @@ impl MVCCMetadata {
         self.last_read.set(timestamp);
 
         old.cur_write_intent
-            .compare_swap_none(self.cur_write_intent.get().clone(), None)
+            .compare_swap_none(self.cur_write_intent.get(), None)
             .unwrap();
 
         // Because we're creating a newer value, newer value must be not committed
@@ -177,7 +177,7 @@ impl Clone for WriteIntentMutex {
 
 impl PartialEq for WriteIntentMutex {
     fn eq(&self, other: &Self) -> bool {
-        return self.get() == other.get();
+        self.get() == other.get()
     }
 }
 

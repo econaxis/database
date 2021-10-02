@@ -8,7 +8,7 @@ pub use mvcc_manager::MVCCMetadata;
 use mvcc_manager::WriteIntentStatus;
 pub use mvcc_manager::{LockDataRef, UnlockedWritableMVCC, ValueWithMVCC};
 use std::assert_matches::debug_assert_matches;
-use log::debug;
+
 
 pub struct ReplicatedTxn<'a> {
     ctx: &'a DbContext,
@@ -101,7 +101,7 @@ impl Transaction {
         let txn = self.txn;
         kv.drain(..).for_each(|a| {
             // As optimization, clear the committed intents
-            ctx.db.get_mut(&a.0).map(|a| a.clear_committed_intent(txn));
+            if let Some(a) = ctx.db.get_mut(&a.0) { a.clear_committed_intent(txn) }
         });
         let mut placeholder = WalTxn::new(self.txn.timestamp);
         std::mem::swap(&mut placeholder, &mut self.log);

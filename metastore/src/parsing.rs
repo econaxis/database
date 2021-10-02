@@ -290,7 +290,7 @@ fn parse_column_list(t: Tok) -> (Vec<ColumnExpr>, Tok) {
     (columns, t)
 }
 
-const TESTQUERY: &'static str = "SELECT DISTINCT bool(int(id)),tele AS telephone_alias, address FROM (SELECT tele AS telephone_alias2 FROM subtable) AS subtable WHERE 3 * ((id + -1) + tele) >= tele";
+const TESTQUERY: &str = "SELECT DISTINCT bool(int(id)),tele AS telephone_alias, address FROM (SELECT tele AS telephone_alias2 FROM subtable) AS subtable WHERE 3 * ((id + -1) + tele) >= tele";
 
 #[derive(Debug)]
 pub enum TableExpression {

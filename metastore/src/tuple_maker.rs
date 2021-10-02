@@ -155,7 +155,7 @@ fn typed_value_to_json(t: TypedValue) -> Option<Value> {
 }
 
 use crate::parsing::TableExpression;
-use crate::parsing::TableExpression::NamedTable;
+
 
 pub fn do_select_stmt(q: SelectQuery, db: &DbContext) {
     let from = match *q.from {
@@ -164,7 +164,7 @@ pub fn do_select_stmt(q: SelectQuery, db: &DbContext) {
     }
     .into();
 
-    let mut txn = ReplicatedTxn::new(&db);
+    let mut txn = ReplicatedTxn::new(db);
     let ret = txn.read_range_owned(&from).unwrap();
     let mut iter = ret.into_iter();
 

@@ -12,7 +12,7 @@ use crate::rpc_handler::{DatabaseInterface, NetworkResult};
 use crate::rwtransaction_wrapper::{LockDataRef, ValueWithMVCC};
 use crate::timestamp::Timestamp;
 use crate::{DbContext, TypedValue};
-use rand::distributions::Alphanumeric;
+
 use rand::Rng;
 use std::fs::{File, OpenOptions};
 
@@ -102,7 +102,7 @@ impl Write for &ByteBufferWAL {
     }
 
     fn flush(&mut self) -> std::io::Result<()> {
-        let l = self.json_lock.lock().unwrap();
+        let _l = self.json_lock.lock().unwrap();
         let mut buf = self.buf.borrow_mut();
 
         let mut file = self.file.lock().unwrap();
@@ -194,29 +194,29 @@ impl WalTxn {
 }
 
 impl DatabaseInterface for &mut WalTxn {
-    fn new_transaction(&self, txn: &LockDataRef) -> NetworkResult<(), String> {
+    fn new_transaction(&self, _txn: &LockDataRef) -> NetworkResult<(), String> {
         unreachable!()
     }
 
     fn serve_read(
         &self,
-        txn: LockDataRef,
-        key: &ObjectPath,
+        _txn: LockDataRef,
+        _key: &ObjectPath,
     ) -> NetworkResult<ValueWithMVCC, String> {
         unreachable!()
     }
 
     fn serve_range_read(
         &self,
-        txn: LockDataRef,
-        key: &ObjectPath,
+        _txn: LockDataRef,
+        _key: &ObjectPath,
     ) -> NetworkResult<Vec<(ObjectPath, ValueWithMVCC)>, String> {
         unreachable!()
     }
 
     fn serve_write(
         &self,
-        txn: LockDataRef,
+        _txn: LockDataRef,
         key: &ObjectPath,
         value: TypedValue,
     ) -> NetworkResult<(), String> {
@@ -228,11 +228,11 @@ impl DatabaseInterface for &mut WalTxn {
         NetworkResult::default()
     }
 
-    fn commit(&self, txn: LockDataRef) -> NetworkResult<(), String> {
+    fn commit(&self, _txn: LockDataRef) -> NetworkResult<(), String> {
         unreachable!()
     }
 
-    fn abort(&self, p0: LockDataRef) -> NetworkResult<(), String> {
+    fn abort(&self, _p0: LockDataRef) -> NetworkResult<(), String> {
         unreachable!()
     }
 }

@@ -1,6 +1,6 @@
 use crate::DbContext;
 
-use crate::rwtransaction_wrapper::{ReplicatedTxn, Transaction};
+use crate::rwtransaction_wrapper::{Transaction};
 use crate::wal_watcher::Operation;
 
 use super::WalTxn;
@@ -12,11 +12,11 @@ pub fn apply_wal_txn_checked(waltxn: WalTxn, ctx: &DbContext) {
     for op in waltxn.ops {
         match op {
             Operation::Write(k, v) => {
-                txn.write(&ctx, &k, v).unwrap();
+                txn.write(ctx, &k, v).unwrap();
             }
             Operation::Read(k, v) => {
                 let v1 = txn
-                    .read_mvcc(&ctx, &k)
+                    .read_mvcc(ctx, &k)
                     .map_err(|err| format!("{} {}", err, k.as_str()))
                     .unwrap();
                 let value1 = v1.get_val();
@@ -28,5 +28,5 @@ pub fn apply_wal_txn_checked(waltxn: WalTxn, ctx: &DbContext) {
         }
     }
 
-    txn.commit(&ctx).unwrap();
+    txn.commit(ctx).unwrap();
 }

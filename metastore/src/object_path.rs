@@ -3,7 +3,7 @@ use std::borrow::Borrow;
 use std::collections::Bound;
 use std::fmt::{Display, Formatter};
 use std::iter::FromIterator;
-use std::io::{BufRead, Split};
+use std::io::{BufRead};
 
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Debug, Serialize, Deserialize)]
 pub struct ObjectPath(String);

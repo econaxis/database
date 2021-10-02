@@ -1,6 +1,6 @@
 use std::borrow::Borrow;
 use std::cell::UnsafeCell;
-use std::collections::btree_map::{BTreeMap, Range};
+use std::collections::btree_map::{BTreeMap};
 use std::ops::RangeBounds;
 
 use super::value_with_mvcc::ValueWithMVCC;
@@ -174,7 +174,7 @@ impl MutBTreeMap {
                 str.write_fmt(format_args!(
                     "{} {:?} {:?}\n",
                     key.to_string(),
-                    x.get_write_intents().as_ref().map(|a| a),
+                    x.get_write_intents().as_ref(),
                     y
                 ))
                 .unwrap();
