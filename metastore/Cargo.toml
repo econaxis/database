@@ -1,0 +1,39 @@
+[package]
+name = "metastore"
+version = "0.1.0"
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+serde_json = "*"
+serde = {version = "*", features = ["derive"]}
+slab = "*"
+rand = "*"
+lazy_static = "*"
+quickcheck = "1.0.3"
+crossbeam = "*"
+log = "*"
+parking_lot = "*"
+quickcheck_macros = "1.0.0"
+bztree = "0.1.0"
+
+[dev-dependencies]
+complexity = "*"
+ansi_term = "0.12.1"
+syn = "*"
+[dev-dependencies.anyhow]
+version = "1.0.28"
+
+[dev-dependencies.structopt]
+version = "0.3.13"
+
+[dev-dependencies.tabular]
+version = "0.1.4"
+
+[dev-dependencies.walkdir]
+version = "2.3.1"
+
+
+[profile.release]
+debug=1

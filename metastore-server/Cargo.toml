@@ -1,0 +1,30 @@
+[package]
+name = "metastore-server"
+version = "0.1.0"
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+metastore = {path = "../metastore"}
+futures = "*"
+tokio = { version = "^1", features = ["full"] }
+hyper = { version = "*", features = ["full"] }
+tonic = "*"
+prost = "*"
+serde_json = "*"
+quickcheck = "*"
+quickcheck_macros = "1.0.0"
+env_logger = "*"
+log = "*"
+
+[build-dependencies]
+tonic-build = "*"
+
+[[bin]]
+name = "metastore-server"
+path="src/hyperserver.rs"
+
+[[bin]]
+name = "grpc-server"
+path= "src/test_grpc_server.rs"

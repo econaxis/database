@@ -1,0 +1,11 @@
+[workspace]
+members = ["metastore", "metastore-server"]
+default-members=["metastore", "metastore-server"]
+
+[profile.dev]
+rpath=true
+
+
+[profile.release]
+rpath=true
+
